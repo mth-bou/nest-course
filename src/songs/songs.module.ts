@@ -20,20 +20,6 @@ import { Artist } from '../artists/artist.entity';
 @Module({
   imports: [TypeOrmModule.forFeature([Song, Artist])],
   controllers: [SongsController],
-  providers: [
-    SongsService,
-    /*{
-      provide: 'CONNECTION',
-      useValue: connection,
-    },*/
-    /*{
-      provide: SongsService,
-      useValue: mockSongsService,
-    },*/
-    {
-      provide: SongsService,
-      useClass: SongsService,
-    },
-  ],
+  providers: [SongsService],
 })
 export class SongsModule {}

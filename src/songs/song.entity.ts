@@ -14,7 +14,7 @@ export class Song {
   releasedDate: Date;
 
   @Column('time')
-  duration: Date;
+  duration: string;
 
   @Column('text')
   lyrics: string;
@@ -25,5 +25,5 @@ export class Song {
 
   // Many songs can belong to playlist for each unique user
   @ManyToOne(() => Playlist, (playlist) => playlist.songs)
-  playlists: Playlist[];
+  playlist: Playlist;
 }

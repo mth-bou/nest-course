@@ -18,7 +18,7 @@ export class Playlist {
   name: string;
 
   // Each playlist will have multiple songs
-  @OneToMany(() => Song, (song) => song.playlists)
+  @OneToMany(() => Song, (song) => song.playlist)
   songs: Song[];
 
   // Each playlist will belong to a unique user

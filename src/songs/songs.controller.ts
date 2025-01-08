@@ -13,6 +13,9 @@ import {
 } from '@nestjs/common';
 import { SongsService } from './songs.service';
 import { CreateSongDto } from './dto/create-song-dto';
+import { Song } from './song.entity';
+import { UpdateSongDto } from './dto/update-song-dto';
+import { UpdateResult } from 'typeorm';
 
 @Controller({
   path: 'songs',
@@ -28,7 +31,7 @@ export class SongsController {
   }
 
   @Get()
-  findAll() {
+  findAll(): Promise<Song[]> {
     // fetch all songs from the db
     try {
       return this.songsService.findAll();
@@ -44,16 +47,16 @@ export class SongsController {
     @Param('id', new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }))
     id: number,
   ) {
-    return `Fetch song on the based on id ${id}`;
+    return this.songsService.findOne(id);
   }
 
   @Put(':id')
-  update(): string {
-    return 'Update song on the based id';
+  update(@Param('id', ParseIntPipe) id: number, @Body() updateSongDto: UpdateSongDto): Promise<UpdateResult> {
+    return this.songsService.update(id, updateSongDto);
   }
 
   @Delete(':id')
-  delete(): string {
-    return 'Delete song on the based id';
+  delete(@Param('id', ParseIntPipe) id: number): Promise<void> {
+    return this.songsService.remove(id);
   }
 }
