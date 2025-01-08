@@ -10,12 +10,16 @@ import {
   ParseIntPipe,
   Post,
   Put,
+  Scope,
 } from '@nestjs/common';
 import { SongsService } from './songs.service';
 import { CreateSongDto } from './dto/create-song-dto';
 import { Connection } from '../common/constants/connection';
 
-@Controller('songs')
+@Controller({
+  path: 'songs',
+  scope: Scope.DEFAULT,
+})
 export class SongsController {
   constructor(
     private songsService: SongsService,
@@ -37,22 +41,15 @@ export class SongsController {
     try {
       return this.songsService.findAll();
     } catch (e) {
-      throw new HttpException(
-        'Server error',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-        {
-          cause: e.message,
-        },
-      );
+      throw new HttpException('Server error', HttpStatus.INTERNAL_SERVER_ERROR, {
+        cause: e.message,
+      });
     }
   }
 
   @Get(':id')
   findOne(
-    @Param(
-      'id',
-      new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }),
-    )
+    @Param('id', new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }))
     id: number,
   ) {
     return `Fetch song on the based on id ${id}`;
